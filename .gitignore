@@ -1,0 +1,10 @@
+/venv/
+/pvlv_database.egg-info/
+/build/
+/dist/
+/__pycache__/
+
+*.pyc
+*.swp
+
+

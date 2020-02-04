@@ -1,10 +1,12 @@
+/.idea/
+/__pycache__/
 /venv/
-/pvlv_database.egg-info/
 /build/
 /dist/
-/__pycache__/
+/pvlv_database.egg-info/
+/test/configs/
+
 
 *.pyc
 *.swp
-
-
+*.cfg

@@ -1,7 +1,7 @@
-from src import CommandData
-from src import MessagesData
-from src import XpData
-from src import BillData
+from pvlv_database.user.modules.commands import CommandData
+from pvlv_database.user.modules.messages import MessagesData
+from pvlv_database.user.modules.xp import XpData
+from pvlv_database.user.modules.bill import BillData
 
 
 class GuildUser(object):

@@ -1,13 +1,13 @@
-from core.db.setting import USERS_TABLE_NAME
-from core.db.query import (pull_data, push_data)
-from src import GuildUser
+from pvlv_database.configurations.configuration import DATABASE_NAME, USERS_TABLE_NAME
+from pvlv_database.connectors.connector import Connector
+from .guild_user.guild_user import GuildUser
 
 
 class User(object):
 
     def __init__(self, guild_id, user_id):
 
-        self.__scope = 'telegram'
+        self.__scope = DATABASE_NAME
         self.__guild_id = guild_id
         self.__user_id = user_id
 
@@ -56,11 +56,11 @@ class User(object):
             'guilds': guilds,
         }
 
-        push_data(self.__scope, USERS_TABLE_NAME, self.__user_id, data)
+        Connector().push_data(self.__scope, USERS_TABLE_NAME, self.__user_id, data)
 
     def get_data(self):
 
-        data = pull_data(self.__scope, USERS_TABLE_NAME, self.__user_id)
+        data = Connector().pull_data(self.__scope, USERS_TABLE_NAME, self.__user_id)
 
         self.username = data.get('username', self.username)
         self.emails = data.get('emails', self.emails)

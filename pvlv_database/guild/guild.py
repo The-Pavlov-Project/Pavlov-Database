@@ -1,15 +1,13 @@
-from core.db.query import (pull_data, push_data)
-from core.db.modules.class_message import MessagesField
+from pvlv_database.configurations.configuration import DATABASE_NAME, GUILDS_TABLE_NAME
+from pvlv_database.connectors.connector import Connector
 
 
-class GuildData(object):
+class Guild(object):
 
     def __init__(self, guild_id):
 
-        self.scope = 'Telegram'
+        self.scope = DATABASE_NAME
         self.guild_id = guild_id
-
-        self.table = 'guilds'  # table where the guilds data will be saved
 
         # guild data logging
         self.guild_name = None
@@ -31,7 +29,6 @@ class GuildData(object):
         self.bits_min_add = 0
         self.bits_max_add = 1
         self.use_global_bits = True
-        self.member_total = 0
 
         self.get_data()
 
@@ -58,14 +55,13 @@ class GuildData(object):
             'bits_min_add': self.bits_min_add,
             'bits_max_add': self.bits_max_add,
             'use_global_bits': self.use_global_bits,
-            'member_total': self.member_total,
         }
 
-        push_data(self.scope, self.table, self.guild_id, data)
+        Connector().push_data(self.scope, GUILDS_TABLE_NAME, self.guild_id, data)
 
     def get_data(self):
 
-        data = pull_data(self.scope, self.table, self.guild_id)
+        data = Connector().pull_data(self.scope, GUILDS_TABLE_NAME, self.guild_id)
 
         self.guild_name = data.get('guild_name', self.guild_name)
         self.owner_id = data.get('owner_id', self.owner_id)
@@ -86,4 +82,3 @@ class GuildData(object):
         self.bits_min_add = data.get('bits_min_add', self.bits_min_add)
         self.bits_max_add = data.get('bits_max_add', self.bits_max_add)
         self.use_global_bits = data.get('use_global_bits', self.use_global_bits)
-        self.member_total = data.get('member_total', self.member_total)

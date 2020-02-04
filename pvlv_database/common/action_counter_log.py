@@ -1,4 +1,4 @@
-from core.db.setting import (
+from pvlv_database.configurations.configuration import (
     MAX_RETENTION_HOUR,
     MAX_RETENTION_DAY,
     MAX_RETENTION_MONTH,

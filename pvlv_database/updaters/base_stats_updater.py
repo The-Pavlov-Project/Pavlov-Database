@@ -1,8 +1,8 @@
 import math
 from datetime import datetime
 
-from src import Database
-from pvlv.settings import *
+from pvlv_database.pvlv_database import Database
+from pvlv_database.configurations.configuration import *
 
 
 class BaseStatsUpdater(object):

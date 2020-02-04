@@ -1,4 +1,4 @@
-from src import ActionCounterLog
+from pvlv_database.common.action_counter_log import ActionCounterLog
 
 
 class MessagesData(object):

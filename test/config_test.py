@@ -1,11 +1,13 @@
 from datetime import datetime
+from time import time
 
 from pvlv_database import Database
 
 
 def creation_test():
     db = Database(123456789, 123456789)  # guild_id, user_id
-    db.set_data()
+    print(db.guild.guild_id)
+    # db.force_set_data()
 
 
 def user_test():
@@ -28,12 +30,26 @@ def user_test():
     # test bits_logs
     db.user.guild.bill.bits += 2
 
-    db.set_data()
+    # db.force_set_data()
 
 
 def main():
     try:
+        t1 = time()
         creation_test()
+        t2 = time()
+        t = (t2 - t1) * 1000
+        print('Execution time {} ms'.format(int(t)))
+        t1 = time()
+        creation_test()
+        t2 = time()
+        t = (t2 - t1) * 1000
+        print('Execution time {} ms'.format(int(t)))
+        t1 = time()
+        creation_test()
+        t2 = time()
+        t = (t2 - t1) * 1000
+        print('Execution time {} ms'.format(int(t)))
         print('database creation test PASS')
     except Exception as exc:
         print(exc)

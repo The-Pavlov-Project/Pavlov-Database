@@ -6,11 +6,9 @@ from pvlv_database.configurations.configuration import *
 
 
 class BaseStatsUpdater(object):
-    def __init__(self, guild_id, user_id, timestamp: datetime):
+    def __init__(self, db: Database, timestamp: datetime):
 
-        self.__guild_id = guild_id
-        self.__user_id = user_id
-        self.__db = Database(self.__guild_id, self.__user_id)
+        self.__db = db
 
         self.__text = ''
         self.__timestamp = timestamp
@@ -22,6 +20,7 @@ class BaseStatsUpdater(object):
     def guild_name(self, guild_name: str):
         if guild_name:
             self.__db.user.guild.guild_name = guild_name
+            self.__db.guild.guild_name = guild_name
 
     def text(self, text: str):
         self.__text = text
@@ -48,6 +47,7 @@ class BaseStatsUpdater(object):
             """
             self.__db.user.guild.msg.update_msg_log((self.__timestamp, 1, time_spent))
 
+
             xp_uncut = int(math.ceil(text_len * XP_SAMPLE_VALUE / SAMPLE_STRING_LEN))
             xp = xp_uncut if xp_uncut <= XP_MAX_VALUE else XP_MAX_VALUE
             self.__db.user.guild.xp.xp_value += xp
@@ -56,8 +56,6 @@ class BaseStatsUpdater(object):
             bits = bits_uncut if bits_uncut <= BITS_MAX_VALUE else BITS_MAX_VALUE
             self.__db.user.guild.bill.bits += bits
 
-        self.__db.set_data()
-
     def update_image(self):
         """
         Update Parameters Based on a default time to send a picture
@@ -65,8 +63,6 @@ class BaseStatsUpdater(object):
         self.__db.user.guild.msg.update_img_log((self.__timestamp, 1, 6))
         self.__db.user.guild.xp.xp_value += 5
         self.__db.user.guild.bill.bits += 1
-
-        self.__db.set_data()
 
     @property
     def is_level_up(self):

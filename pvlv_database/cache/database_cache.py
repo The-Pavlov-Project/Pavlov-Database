@@ -16,6 +16,7 @@ class DatabaseCache(object):
         self.users = []
         self.guilds = []
 
+        # set and start the demon for auto-save
         self.saving_demon = SavingDemon()
         self.saving_demon.start_loop(self.__save, CACHE_INTERVAL_SECONDS)
 
@@ -26,11 +27,12 @@ class DatabaseCache(object):
         :param identifier: the object that will identify that item
         :return: the item stored
         """
-        for el in storage_list:
-            el: ItemStorage
-            if el.identifier == identifier:
-                el.is_modified = True
-                return el.item
+        for i, item in enumerate(storage_list):
+            item: ItemStorage
+            if item.identifier == identifier:
+                storage_list[i].is_modified = True
+                return storage_list[i].item
+
         return None
 
     def __add_el(self, storage_list_name, identifier, item):
@@ -39,13 +41,23 @@ class DatabaseCache(object):
         :param identifier: the object that will identify that item
         :param item: the item to store
         """
+        item_storage = ItemStorage(identifier, item)  # create a new itemStorage
+
         storage_list = getattr(self, storage_list_name)  # get the obj by the name
-        item_to_store = ItemStorage(identifier, item, time())  # create a new itemStorage
         if len(storage_list) > CACHE_MAX_ITEMS:  # Check if the storage has reached the maxim capability
             storage_list.pop(0)
-        storage_list.append(item_to_store)
+
+        storage_list.append(item_storage)
 
     def user(self, guild_id, user_id):
+        """
+        Search the user in the cache,
+        if is not present get it from the remote DB
+
+        :param guild_id: the id
+        :param user_id: the id
+        :return: the user obj
+        """
         identifier = (guild_id, user_id)
         u = self.__find_el(self.users, identifier)
 
@@ -56,6 +68,13 @@ class DatabaseCache(object):
         return u
 
     def guild(self, guild_id):
+        """
+        Search the guild in the cache,
+        if is not present get it from the remote DB
+
+        :param guild_id: the id
+        :return: the guild obj
+        """
         g = self.__find_el(self.guilds, guild_id)
 
         if not g:  # if the guild is in the cache system return it, else get it from remote db
@@ -72,15 +91,18 @@ class DatabaseCache(object):
         - check if the time has passed.
         if boot the preconditions are true then update the item on the remote db
         """
-        for el in storage_list:
-            el: ItemStorage
-            if el.is_modified:
-                logger.info('Database Save item in: {}'.format(el.identifier))
-                el.is_modified = False
-                el.last_save = time()
-                el.item.set_data()
+        for i, item in enumerate(storage_list):
+            item: ItemStorage  # define the type of the item for object visibility
+            if item.is_modified:
+                logger.info('Db sync, item: {}'.format(item.identifier))
+                storage_list[i].is_modified = False  # Reset the modified flag
+                storage_list[i].last_save = time()  # update the time
+                storage_list[i].item.set_data()  # call che method to sync with
 
     def __save(self):
-
+        """
+        The object called by the thread to save all the tables to the remote Database
+        """
+        logger.info('Database changes check')
         self.__save_storage_list(self.users)
         self.__save_storage_list(self.guilds)

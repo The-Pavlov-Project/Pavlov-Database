@@ -16,6 +16,7 @@ MONGO_CONNECTION_STRING = parser.get('connection', 'MONGO_CONNECTION_STRING')
 DATABASE_NAME = parser.get('database', 'DATABASE_NAME')
 USERS_TABLE_NAME = parser.get('database', 'USERS_TABLE_NAME')
 GUILDS_TABLE_NAME = parser.get('database', 'GUILDS_TABLE_NAME')
+COMMANDS_TABLE_NAME = parser.get('database', 'COMMANDS_TABLE_NAME', fallback='commands')
 
 DEBUG = parser.get('debug', 'DEBUG', fallback=False)
 
@@ -41,15 +42,15 @@ TIME_SAMPLE_VALUE = parser.get('values', 'TIME_SAMPLE_VALUE', fallback=11)
 XP_SAMPLE_VALUE = parser.get('values', 'XP_SAMPLE_VALUE', fallback=12)
 XP_MAX_VALUE = parser.get('values', 'XP_MAX_VALUE', fallback=15)
 # XP for next level
-XP_NEXT_LEVEL = parser.get('values', 'XP_NEXT_LEVEL', fallback=300)
+XP_NEXT_LEVEL = int(parser.get('values', 'XP_NEXT_LEVEL', fallback=300))
 
 # BITS gain by message
-BITS_SAMPLE_VALUE = parser.get('values', 'BITS_SAMPLE_VALUE', fallback=5)
-BITS_MAX_VALUE = parser.get('values', 'BITS_MAX_VALUE', fallback=2)
+BITS_SAMPLE_VALUE = int(parser.get('values', 'BITS_SAMPLE_VALUE', fallback=5))
+BITS_MAX_VALUE = int(parser.get('values', 'BITS_MAX_VALUE', fallback=2))
 
 # cache
-CACHE_INTERVAL_SECONDS = parser.get('cache', 'DB_SAVE_INTERVAL', fallback=600)  # 10 min
-CACHE_MAX_ITEMS = parser.get('cache', 'MAX_CACHE_ITEMS', fallback=100)
+CACHE_INTERVAL_SECONDS = int(parser.get('cache', 'DB_SAVE_INTERVAL', fallback=600))  # 10 min
+CACHE_MAX_ITEMS = int(parser.get('cache', 'MAX_CACHE_ITEMS', fallback=100))
 
 # User MESSAGE destination
 MSG_DISABLED = 0

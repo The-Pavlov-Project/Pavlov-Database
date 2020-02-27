@@ -7,7 +7,7 @@ packages = find_packages(exclude=['tests*'])
 
 setup(
     name='pvlv_database',
-    version='0.0.8',
+    version='0.0.9',
     license='LGPLv3',
 
     author='AbbestiaDC',

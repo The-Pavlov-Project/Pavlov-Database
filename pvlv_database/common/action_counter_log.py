@@ -21,9 +21,9 @@ class ActionCounterLog(object):
         self.total_count = 1  # global use count with no data retention
 
     def extract_data(self, raw_data):
-        self.__log_by_hour = raw_data.get('log_by_hour', self.log_by_hour)
-        self.__log_by_day = raw_data.get('log_by_day', self.log_by_day)
-        self.__log_by_month = raw_data.get('log_by_month', self.log_by_month)
+        self.__log_by_hour = raw_data.get('log_by_hour', self.__log_by_hour)
+        self.__log_by_day = raw_data.get('log_by_day', self.__log_by_day)
+        self.__log_by_month = raw_data.get('log_by_month', self.__log_by_month)
 
         self.total_count = raw_data.get('total_count', self.total_count)
 

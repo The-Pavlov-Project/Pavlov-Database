@@ -6,7 +6,7 @@ db_cache = DatabaseCache()  # the global module that will handle the cache
 
 class Database(object):
 
-    def __init__(self, guild_id=0, user_id=0):
+    def __init__(self, guild_id, user_id):
 
         self.user = db_cache.user(guild_id, user_id)
         self.guild = db_cache.guild(guild_id)

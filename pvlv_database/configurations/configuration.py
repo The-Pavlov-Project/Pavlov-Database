@@ -34,6 +34,8 @@ MAX_RETENTION_HOUR = parser.get('values', 'MAX_RETENTION_HOUR', fallback=72)
 MAX_RETENTION_DAY = parser.get('values', 'MAX_RETENTION_DAY', fallback=90)
 MAX_RETENTION_MONTH = parser.get('values', 'MAX_RETENTION_MONTH', fallback=120)
 
+MAX_RETENTION_TEXT = parser.get('values', 'MAX_RETENTION_TEXT', fallback=60)
+
 # USER_DATA_LOG CONFIG
 SAMPLE_STRING_LEN = parser.get('values', 'SAMPLE_STRING_LEN', fallback=30)
 # Time spent to type

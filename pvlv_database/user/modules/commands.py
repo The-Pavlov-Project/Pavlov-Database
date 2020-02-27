@@ -43,7 +43,9 @@ class CommandData(object):
         """
         command_name = command_name.replace('.', '_')
         if command_name.replace('.', '_') in self.__dict__.keys():
-            return getattr(self, command_name)
+            c: ActionCounterLog
+            c = getattr(self, command_name)
+            return c
 
     def get_command_interactions(self, command_name):
         """
@@ -60,19 +62,27 @@ class CommandData(object):
         Update the command use stats
         :param command_name:  the name of the command as in the command declaration file for call command(command_name)
         :param timestamp: The time stamp of the message to log
+
+        If the command is not already in db.
+        - Create a new object update it and then save it
+        else:
+        - Just update it
         """
         command = self.command(command_name)
-        if command:
+        to_save = False
+        if not command:
+            to_save = True
+            command = ActionCounterLog()
 
-            value = (timestamp, 1, 0)
-            command.update_log_by_hour(value)
-            command.update_log_by_day(value)
-            command.update_log_by_month(value)
-            command.total_count += 1
+        value = (timestamp, 1, 0)
+        command.update_log_by_hour(value)
+        command.update_log_by_day(value)
+        command.update_log_by_month(value)
+        command.total_count += 1
 
-        else:
+        if to_save:
             setattr(
                 self,
                 command_name,
-                ActionCounterLog()
+                command
             )
